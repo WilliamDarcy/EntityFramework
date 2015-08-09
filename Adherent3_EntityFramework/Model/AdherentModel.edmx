@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="associationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="adherent">
+          <Key>
+            <PropertyRef Name="idAdherent" />
+          </Key>
+          <Property Name="idAdherent" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prenom" Type="nvarchar" MaxLength="50" />
+          <Property Name="CodePostal" Type="nchar" MaxLength="10" />
+          <Property Name="Ville" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateNaissance" Type="datetime" />
+          <Property Name="TypeAdhesion" Type="int" />
+        </EntityType>
+        <EntityType Name="typeadhesion">
+          <Key>
+            <PropertyRef Name="idTypeAdhesion" />
+          </Key>
+          <Property Name="idTypeAdhesion" Type="int" Nullable="false" />
+          <Property Name="Libelle" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tarif" Type="int" />
+        </EntityType>
+        <Association Name="FK_adherent_typeadhesion">
+          <End Role="typeadhesion" Type="Self.typeadhesion" Multiplicity="0..1" />
+          <End Role="adherent" Type="Self.adherent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="typeadhesion">
+              <PropertyRef Name="idTypeAdhesion" />
+            </Principal>
+            <Dependent Role="adherent">
+              <PropertyRef Name="TypeAdhesion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="associationModelStoreContainer">
+          <EntitySet Name="adherent" EntityType="Self.adherent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="typeadhesion" EntityType="Self.typeadhesion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_adherent_typeadhesion" Association="Self.FK_adherent_typeadhesion">
+            <End Role="typeadhesion" EntitySet="typeadhesion" />
+            <End Role="adherent" EntitySet="adherent" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="associationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="adherent">
+          <Key>
+            <PropertyRef Name="idAdherent" />
+          </Key>
+          <Property Name="idAdherent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prenom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CodePostal" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Ville" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateNaissance" Type="DateTime" Precision="3" />
+          <Property Name="TypeAdhesion" Type="Int32" />
+          <NavigationProperty Name="typeadhesion1" Relationship="Self.FK_adherent_typeadhesion" FromRole="adherent" ToRole="typeadhesion" />
+        </EntityType>
+        <EntityType Name="typeadhesion">
+          <Key>
+            <PropertyRef Name="idTypeAdhesion" />
+          </Key>
+          <Property Name="idTypeAdhesion" Type="Int32" Nullable="false" />
+          <Property Name="Libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tarif" Type="Int32" />
+          <NavigationProperty Name="adherent" Relationship="Self.FK_adherent_typeadhesion" FromRole="typeadhesion" ToRole="adherent" />
+        </EntityType>
+        <Association Name="FK_adherent_typeadhesion">
+          <End Role="typeadhesion" Type="Self.typeadhesion" Multiplicity="0..1" />
+          <End Role="adherent" Type="Self.adherent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="typeadhesion">
+              <PropertyRef Name="idTypeAdhesion" />
+            </Principal>
+            <Dependent Role="adherent">
+              <PropertyRef Name="TypeAdhesion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="associationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="adherent" EntityType="Self.adherent" />
+          <EntitySet Name="typeadhesion" EntityType="Self.typeadhesion" />
+          <AssociationSet Name="FK_adherent_typeadhesion" Association="Self.FK_adherent_typeadhesion">
+            <End Role="typeadhesion" EntitySet="typeadhesion" />
+            <End Role="adherent" EntitySet="adherent" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="associationModelStoreContainer" CdmEntityContainer="associationEntities">
+          <EntitySetMapping Name="adherent">
+            <EntityTypeMapping TypeName="associationModel.adherent">
+              <MappingFragment StoreEntitySet="adherent">
+                <ScalarProperty Name="idAdherent" ColumnName="idAdherent" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="CodePostal" ColumnName="CodePostal" />
+                <ScalarProperty Name="Ville" ColumnName="Ville" />
+                <ScalarProperty Name="DateNaissance" ColumnName="DateNaissance" />
+                <ScalarProperty Name="TypeAdhesion" ColumnName="TypeAdhesion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="typeadhesion">
+            <EntityTypeMapping TypeName="associationModel.typeadhesion">
+              <MappingFragment StoreEntitySet="typeadhesion">
+                <ScalarProperty Name="idTypeAdhesion" ColumnName="idTypeAdhesion" />
+                <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+                <ScalarProperty Name="Tarif" ColumnName="Tarif" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
